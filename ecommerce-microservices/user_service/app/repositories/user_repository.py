@@ -3,11 +3,16 @@
 from app.core.database import SessionLocal
 from app.models.user import User
 
-def save_user(user_data):
-    db = SessionLocal()
-    user = User(**user_data.dict())
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    db.close()
-    return user
+class UserRepository:
+    def __init__(self):
+        self.db = SessionLocal()
+
+    def save_user(self, user_data):
+        user = User(**user_data.dict())
+        self.db.add(user)
+        self.db.commit()
+        self.db.refresh(user)
+        return user
+
+    def __del__(self):
+        self.db.close()
