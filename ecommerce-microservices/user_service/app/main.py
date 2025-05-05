@@ -1,3 +1,5 @@
+  # Uygulamanın başlatıldığı ana dosya
+
 from fastapi import FastAPI
 from app.controllers import user_controller
 from app.core.database import engine, Base

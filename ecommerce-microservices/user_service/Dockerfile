@@ -1,4 +1,7 @@
-FROM python:3.10
+FROM python:3.10-slim
+
+# Update system packages to address vulnerabilities
+RUN apt-get update && apt-get upgrade -y && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 

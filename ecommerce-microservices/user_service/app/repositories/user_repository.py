@@ -1,3 +1,5 @@
+ # Kullanıcı verisiyle ilgili işlemleri burada yaparız (veritabanı)
+
 from app.core.database import SessionLocal
 from app.models.user import User
 
