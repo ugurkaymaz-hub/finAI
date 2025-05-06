@@ -21,6 +21,15 @@ services:
         environment:
             DATABASE_URL: postgresql://postgres:postgres@db:5432/product_db
 
+    frontend:
+        build: ./frontend
+        container_name: frontend
+        ports:
+            - "3000:3000"
+        depends_on:
+            - user_service
+            - product_service
+
     db:
         image: postgres:15
         container_name: postgres_db
