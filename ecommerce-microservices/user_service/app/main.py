@@ -1,4 +1,4 @@
-  # Uygulamanın başlatıldığı ana dosya
+# Uygulamanın başlatıldığı ana dosya
 
 from fastapi import FastAPI
 from app.controllers import user_controller

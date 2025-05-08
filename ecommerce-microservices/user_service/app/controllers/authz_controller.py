@@ -31,3 +31,7 @@ def has_permission(permission: str, user: User = Depends(get_current_user)):
     if not has_permission:
         raise HTTPException(status_code=403, detail=f"User does not have permission {permission}")
     return True
+
+
+
+

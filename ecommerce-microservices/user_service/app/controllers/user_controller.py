@@ -1,7 +1,7 @@
 # Tüm kullanıcı işlemlerini burada tanımlayacağız
 
 from fastapi import APIRouter, Depends
-from app.schemas.user_schema import UserCreate
+from app.schemas.user_schema import UserCreate , UserUpdate , UserPasswordChangeRequest
 from app.services.user_services import UserService
 from app.models.user import User
 from app.core.auth import is_admin, is_user
@@ -9,14 +9,8 @@ from app.core.auth import is_admin, is_user
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
-@router.post("/")
-def register_user(user: UserCreate):
-    return create_user(user)
-
-
-router = APIRouter()
-
 user_service = UserService()
+
 
 # Kullanıcıları getir (Admin)
 @router.get("/user")
@@ -30,12 +24,12 @@ async def get_user_details(username: str, user: User = Depends(is_admin)):
 
 # Yeni kullanıcı oluştur (Admin)
 @router.post("/user")
-async def create_user(user_data: User, user: User = Depends(is_admin)):
+async def create_user(user_data: UserCreate, user: User = Depends(is_admin)):
     return user_service.create_user(user_data)
 
 # Kullanıcıyı güncelle (Admin)
 @router.put("/user/{username}")
-async def update_user(username: str, user_data: User, user: User = Depends(is_admin)):
+async def update_user(username: str, user_data: UserUpdate, user: User = Depends(is_admin)):
     return user_service.update_user(username, user_data)
 
 # Kullanıcıyı sil (soft delete) (Admin)
@@ -45,8 +39,8 @@ async def delete_user(username: str, user: User = Depends(is_admin)):
 
 # Şifre değiştir (User)
 @router.put("/user/{username}/change-password")
-async def change_password(username: str, old_password: str, new_password: str, user: User = Depends(is_user)):
-    return user_service.change_password(username, old_password, new_password)
+async def change_password(username: str, passwords: UserPasswordChangeRequest, user: User = Depends(is_user)):
+    return user_service.change_password(username, passwords.old_password, passwords.new_password)
 
 # Şifre sıfırla (Admin)
 @router.put("/user/{username}/reset-password")
@@ -67,3 +61,5 @@ async def deactivate_user(username: str, user: User = Depends(is_admin)):
 @router.put("/user/me/deactivate")
 async def deactivate_own_account(user: User = Depends(is_user)):
     return user_service.deactivate_own_account(user)
+
+

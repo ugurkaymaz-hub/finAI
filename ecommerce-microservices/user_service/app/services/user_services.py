@@ -1,8 +1,8 @@
 # Kullanıcı işlemlerinin iş mantığını burada tanımlarız
 
-from app.schemas.user_schema import UserCreate
+from app.schemas.user_schema import UserCreate , UserPasswordChangeRequest
 from app.repositories.user_repository import UserRepository
-from app.core.security import hash_password
+from app.core.security import hash_password , verify_password
 from fastapi import HTTPException
 from app.models.user import User
 
@@ -21,21 +21,27 @@ class UserService:
         # Şifreyi hash'le
         hashed_password = hash_password(user_data.password)
         # Yeni kullanıcıyı oluştur ve kaydet
-        user = User(username=user_data.username, email=user_data.email, password=hashed_password)
+        user = User(
+            username=user_data.username, 
+            password=hashed_password , 
+            full_name=user_data.full_name ,
+            is_active=user_data.is_active
+        )
         return UserRepository.save_user(user)
-
-    @staticmethod
-    def update_user(username: str, user_data: User):
-        return UserRepository.update_user(username, user_data)
-
+    
     @staticmethod
     def delete_user(username: str):
         return UserRepository.delete_user(username)
 
     @staticmethod
-    def change_password(username: str, old_password: str, new_password: str):
+    def update_user(username: str, user_data: User):
+        return UserRepository.update_user(username, user_data)
+
+    
+    @staticmethod
+    def change_password(username: str, passwords: UserPasswordChangeRequest):
         # Burada eski şifre doğrulama ve yeni şifre hash'leme işlemi ekleyebilirsiniz
-        return UserRepository.change_password(username, old_password, new_password)
+        return UserRepository.change_password(username, passwords.old_password, passwords.new_password)
 
     @staticmethod
     def reset_password(username: str):

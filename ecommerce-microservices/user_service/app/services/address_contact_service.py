@@ -1,6 +1,6 @@
 from app.repositories.address_contact_repository import AddressRepository
 from app.models.user import User
-from app.models.address_contact import Address
+from app.models.address_contact import Address_Contact
 from fastapi import HTTPException
 
 
@@ -12,12 +12,12 @@ class AddressService:
         return AddressRepository.get_addresses_for_user(user)
 
     @staticmethod
-    def add_address_for_user(user: User, address: Address):
+    def add_address_for_user(user: User, address: Address_Contact):
         """Kullanıcının yeni bir adres eklemesini sağlar."""
         return AddressRepository.add_address_for_user(user, address)
 
     @staticmethod
-    def update_address_for_user(user: User, address_id: int, address: Address):
+    def update_address_for_user(user: User, address_id: int, address: Address_Contact):
         """Kullanıcının adresini günceller."""
         return AddressRepository.update_address_for_user(user, address_id, address)
 
