@@ -5,10 +5,7 @@ from app.models.address_contact import Address_Contact
 from app.core.security import get_current_user
 
 
-router = APIRouter(
-    prefix="/address",
-    tags=["Address"]
-)
+router = APIRouter(prefix="/address", tags=["Address"] )
 
 # Adresleri Listele
 @router.get("/", response_model=list[Address_Contact])
