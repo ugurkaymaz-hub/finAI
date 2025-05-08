@@ -1,31 +1,36 @@
 from sqlalchemy.orm import Session
-from models.order_model import Order, OrderItem
+from repositories.interfaces.order_repository import OrderRepositoryInterface
+from services.cart_service import CartService
+from models.order_model import OrderCreate, OrderItemCreate
 from models.cart_model import CartItem
-from repositories import order_repository, cart_repository
 
-def create_order_from_cart(db: Session, user_id: int):
-    cart_items = cart_repository.get_cart_items_by_user(db, user_id)
-    if not cart_items:
-        return None
+class OrderService:
+    def __init__(self, repo: OrderRepositoryInterface, cart_service: CartService):
+        self.repo = repo
+        self.cart_service = cart_service
 
-    order = Order(user_id=user_id)
-    db.add(order)
-    db.flush()  # Order ID'yi alabilmek için
+    def place_order(self, db: Session, user_id: int):
+        cart_items: list[CartItem] = self.cart_service.get_user_cart(db, user_id)
+        if not cart_items:
+            return None
 
-    order_items = []
-    for item in cart_items:
-        order_items.append(OrderItem(
-            order_id=order.id,
-            product_id=item.product_id,
-            quantity=item.quantity,
-            price=0.0  # opsiyonel: fiyat bilgisi product tablosundan alınabilir
-        ))
+        # Stok ve toplam hesaplama simülasyonu
+        total = sum(item.quantity * item.price for item in cart_items)
 
-    db.add_all(order_items)
-    cart_repository.clear_cart(db, user_id)  # sepeti temizle
-    db.commit()
-    db.refresh(order)
-    return order
+        order_items = [
+            OrderItemCreate(
+                product_id=item.product_id,
+                quantity=item.quantity,
+                price=item.price
+            )
+            for item in cart_items
+        ]
 
-def get_user_orders(db: Session, user_id: int):
-    return order_repository.get_orders_by_user(db, user_id)
+        order_data = OrderCreate(items=order_items, total_price=total)
+        order = self.repo.create_order(db, user_id, order_data)
+
+        self.cart_service.clear_cart(db, user_id)
+        return order
+
+    def get_order_history(self, db: Session, user_id: int):
+        return self.repo.get_user_orders(db, user_id)

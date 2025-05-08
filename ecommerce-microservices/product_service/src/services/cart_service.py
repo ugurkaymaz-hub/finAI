@@ -1,34 +1,25 @@
 from sqlalchemy.orm import Session
-from models.cart_model import CartItem
-from schemas.cart_schema import CartItemCreate, CartItemUpdate
-from repositories import cart_repository
+from repositories.interfaces.cart_repository import CartRepositoryInterface
+from models.cart_model import CartItemCreate, CartItemUpdate
 
-def get_user_cart(db: Session, user_id: int):
-    return cart_repository.get_cart_items_by_user(db, user_id)
+class CartService:
+    def __init__(self, repo: CartRepositoryInterface):
+        self.repo = repo
 
-def get_cart_item_detail(db: Session, user_id: int, product_id: int):
-    return cart_repository.get_cart_item(db, user_id, product_id)
+    def get_user_cart(self, db: Session, user_id: int):
+        return self.repo.get_user_cart(db, user_id)
 
-def add_to_cart(db: Session, user_id: int, data: CartItemCreate):
-    existing = cart_repository.get_cart_item(db, user_id, data.product_id)
-    if existing:
-        existing.quantity += data.quantity
-        return cart_repository.update_cart_item(db, existing)
-    new_item = CartItem(user_id=user_id, **data.dict())
-    return cart_repository.create_cart_item(db, new_item)
+    def get_cart_item(self, db: Session, user_id: int, product_id: int):
+        return self.repo.get_cart_item(db, user_id, product_id)
 
-def update_cart_item_quantity(db: Session, user_id: int, product_id: int, quantity: int):
-    item = cart_repository.get_cart_item(db, user_id, product_id)
-    if item:
-        item.quantity = quantity
-        return cart_repository.update_cart_item(db, item)
-    return None
+    def add_to_cart(self, db: Session, user_id: int, item: CartItemCreate):
+        return self.repo.add_to_cart(db, user_id, item)
 
-def remove_from_cart(db: Session, user_id: int, product_id: int):
-    item = cart_repository.get_cart_item(db, user_id, product_id)
-    if item:
-        return cart_repository.delete_cart_item(db, item)
-    return False
+    def update_cart_item(self, db: Session, user_id: int, item: CartItemUpdate):
+        return self.repo.update_cart_item(db, user_id, item)
 
-def clear_cart(db: Session, user_id: int):
-    return cart_repository.clear_cart(db, user_id)
+    def remove_from_cart(self, db: Session, user_id: int, product_id: int):
+        return self.repo.remove_from_cart(db, user_id, product_id)
+
+    def clear_cart(self, db: Session, user_id: int):
+        return self.repo.clear_cart(db, user_id)

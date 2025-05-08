@@ -12,3 +12,17 @@ class CartItem(Base):
 
     # İlişkiler (opsiyonel)
     # product = relationship("Product", back_populates="cart_items")
+
+class CartItemCreate(Base): 
+    __tablename__ = "cart_item_create"
+    __table_args__ = {'extend_existing': True}
+    id = Column(Integer, primary_key=True, index=True)
+    product_id = Column(Integer, nullable=False)
+    quantity = Column(Integer, nullable=False)
+
+class CartItemUpdate(Base):
+    __tablename__ = "cart_item_update"
+    __table_args__ = {'extend_existing': True}
+    id = Column(Integer, primary_key=True, index=True)
+    product_id = Column(Integer, nullable=False)
+    quantity = Column(Integer, nullable=False)
