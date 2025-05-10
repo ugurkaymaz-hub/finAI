@@ -1,9 +1,7 @@
- # Kullanıcı modeli burada tanımlanır
-
-from sqlalchemy import Column, Integer, String
+# models/user.py
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from app.core.database import Base
-from sqlalchemy import Boolean
 from app.models.address_contact import Address_Contact
 
 class User(Base):
@@ -14,10 +12,16 @@ class User(Base):
     password = Column(String)
     full_name = Column(String)
     is_active = Column(Boolean, default=True)  # 1: active, 0: inactive
-    role = Column(String, default="user")  # "admin" veya "user"
+    email = Column(String, unique=True, index=True)
+    phone = Column(String(20))
+
+    
+    # Adresler ile ilişki tanımlaması
     addresses = relationship("Address_Contact", back_populates="user")
 
-
+    # Role ile ilişki tanımlaması
+    role_id = Column(Integer, ForeignKey("roles.id"))  # Role'ye bağlayan foreign key
+    role = relationship("Role", back_populates="users")
 
 
     

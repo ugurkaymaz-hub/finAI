@@ -14,8 +14,8 @@ class AuthService:
         user = AuthRepository.get_user_by_username(request.username)
         # Kullanıcı adı ve şifre kontrolü
         # Eğer kullanıcı yoksa veya şifre yanlışsa hata fırlatılır
-        if not user or not verify_password(request.password, user.password): 
-            raise HTTPException(status_code=401, detail="Invalid credentials")
+        if not user or not verify_password(request.password , user.password): 
+            raise HTTPException(status_code=401, detail="The username or password is incorrect")
         #Giriş yapan kullanıcı için token oluşturulur.
         token = create_access_token(data={"sub": user.username})
         return Token(access_token=token, token_type="bearer")

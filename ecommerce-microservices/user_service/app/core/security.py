@@ -16,7 +16,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
-#Eski şifre ile şimdikini karşılaştırma
+#Giriş yapan kullanıcının şifresini doğrulama
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
