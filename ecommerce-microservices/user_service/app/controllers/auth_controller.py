@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from app.schemas.auth_schema import LoginRequest, Token
 from app.services.auth_service import AuthService
-from app.core.security import get_current_user
+from app.core.auth import get_current_user
 
 router = APIRouter()
 

@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, ForeignKey, Float, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from core.database import Base
+from pydantic import BaseModel
+from typing import List, Optional
 
 class Order(Base):
     __tablename__ = "orders"
@@ -24,7 +26,36 @@ class OrderItem(Base):
 
     order = relationship("Order", back_populates="items")
 
-class OrderCreate:
-    def __init__(self, items: list, total_price: float):
-        self.items = items
-        self.total_price = total_price
+# Pydantic models for request/response
+class OrderItemBase(BaseModel):
+    product_id: int
+    quantity: int
+    price: float
+
+class OrderItemCreate(OrderItemBase):
+    pass
+
+class OrderItemResponse(OrderItemBase):
+    id: int
+    order_id: int
+
+    class Config:
+        from_attributes = True
+
+class OrderBase(BaseModel):
+    user_id: int
+    total_price: float
+
+class OrderCreate(OrderBase):
+    items: List[OrderItemCreate]
+
+class OrderUpdate(BaseModel):
+    total_price: Optional[float] = None
+
+class OrderResponse(OrderBase):
+    id: int
+    created_at: datetime
+    items: List[OrderItemResponse]
+
+    class Config:
+        from_attributes = True

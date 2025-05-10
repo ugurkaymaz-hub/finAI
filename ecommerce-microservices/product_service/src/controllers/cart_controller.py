@@ -1,32 +1,51 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from typing import List
+
+from models.cart_model import CartItemCreate, CartItemUpdate, CartItem
+from services.cart_service import CartService
+from repositories.concrete.cart_repository_impl import CartRepository
 from core.database import get_db
-from schemas.cart_schema import CartItemCreate, CartItemUpdate
-from services import cart_service
-from auth.dependencies import require_user  # Kullanıcıyı JWT'den ayıklayan yardımcı fonksiyon
+from auth.dependencies import require_user
 
 router = APIRouter(prefix="/cart", tags=["Cart"])
 
-@router.get("/")
-def get_cart(user=Depends(require_user), db: Session = Depends(get_db)):
-    return cart_service.get_user_cart(db, user["user_id"])
+# Service ve repository instance'ları
+repo = CartRepository()
+cart_service = CartService(repo)
 
-@router.get("/{product_id}")
-def get_item_detail(product_id: int, user=Depends(require_user), db: Session = Depends(get_db)):
-    return cart_service.get_cart_item_detail(db, user["user_id"], product_id)
+# Sepeti getir
+@router.get("/", response_model=List[CartItem])
+def get_cart(db: Session = Depends(get_db), user_data=Depends(require_user)):
+    return cart_service.get_user_cart(db, user_id=user_data["user_id"])
 
-@router.post("/")
-def add_item_to_cart(data: CartItemCreate, user=Depends(require_user), db: Session = Depends(get_db)):
-    return cart_service.add_to_cart(db, user["user_id"], data)
+# Sepetteki bir ürünün detayını getir
+@router.get("/{product_id}", response_model=CartItem)
+def get_cart_item(product_id: int, db: Session = Depends(get_db), user_data=Depends(require_user)):
+    item = cart_service.get_cart_item(db, user_id=user_data["user_id"], product_id=product_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Ürün sepette bulunamadı")
+    return item
 
-@router.put("/{product_id}")
-def update_item_quantity(product_id: int, data: CartItemUpdate, user=Depends(require_user), db: Session = Depends(get_db)):
-    return cart_service.update_cart_item_quantity(db, user["user_id"], product_id, data.quantity)
+# Sepete ürün ekle
+@router.post("/", response_model=CartItem, status_code=status.HTTP_201_CREATED)
+def add_to_cart(item: CartItemCreate, db: Session = Depends(get_db), user_data=Depends(require_user)):
+    return cart_service.add_to_cart(db, user_id=user_data["user_id"], item=item)
 
-@router.delete("/{product_id}")
-def remove_item(product_id: int, user=Depends(require_user), db: Session = Depends(get_db)):
-    return cart_service.remove_from_cart(db, user["user_id"], product_id)
+# Sepetteki ürün adedini güncelle
+@router.put("/", response_model=CartItem)
+def update_cart_item(item: CartItemUpdate, db: Session = Depends(get_db), user_data=Depends(require_user)):
+    updated = cart_service.update_cart_item(db, user_id=user_data["user_id"], item=item)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Ürün sepette bulunamadı")
+    return updated
 
-@router.delete("/")
-def clear_user_cart(user=Depends(require_user), db: Session = Depends(get_db)):
-    return cart_service.clear_cart(db, user["user_id"])
+# Sepetten ürün çıkar
+@router.delete("/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+def remove_from_cart(product_id: int, db: Session = Depends(get_db), user_data=Depends(require_user)):
+    cart_service.remove_from_cart(db, user_id=user_data["user_id"], product_id=product_id)
+
+# Sepeti temizle
+@router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
+def clear_cart(db: Session = Depends(get_db), user_data=Depends(require_user)):
+    cart_service.clear_cart(db, user_id=user_data["user_id"])

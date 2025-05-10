@@ -1,28 +1,62 @@
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, Float, DateTime
 from sqlalchemy.orm import relationship
+from datetime import datetime
 from core.database import Base
+from pydantic import BaseModel
+from typing import List, Optional
+
+class Cart(Base):
+    __tablename__ = "carts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True, unique=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    items = relationship("CartItem", back_populates="cart", cascade="all, delete-orphan")
 
 class CartItem(Base):
     __tablename__ = "cart_items"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, index=True)
+    cart_id = Column(Integer, ForeignKey("carts.id"))
     product_id = Column(Integer, index=True)
     quantity = Column(Integer, nullable=False)
 
-    # İlişkiler (opsiyonel)
-    # product = relationship("Product", back_populates="cart_items")
+    cart = relationship("Cart", back_populates="items")
 
-class CartItemCreate(Base): 
-    __tablename__ = "cart_item_create"
-    __table_args__ = {'extend_existing': True}
-    id = Column(Integer, primary_key=True, index=True)
-    product_id = Column(Integer, nullable=False)
-    quantity = Column(Integer, nullable=False)
+# Pydantic models for request/response
+class CartItemBase(BaseModel):
+    product_id: int
+    quantity: int
 
-class CartItemUpdate(Base):
-    __tablename__ = "cart_item_update"
-    __table_args__ = {'extend_existing': True}
-    id = Column(Integer, primary_key=True, index=True)
-    product_id = Column(Integer, nullable=False)
-    quantity = Column(Integer, nullable=False)
+class CartItemCreate(CartItemBase):
+    pass
+
+class CartItemUpdate(CartItemBase):
+    quantity: Optional[int] = None
+
+class CartItemResponse(CartItemBase):
+    id: int
+    cart_id: int
+
+    class Config:
+        from_attributes = True
+
+class CartBase(BaseModel):
+    user_id: int
+
+class CartCreate(CartBase):
+    items: List[CartItemCreate]
+
+class CartUpdate(BaseModel):
+    items: List[CartItemUpdate]
+
+class CartResponse(CartBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+    items: List[CartItemResponse]
+
+    class Config:
+        from_attributes = True

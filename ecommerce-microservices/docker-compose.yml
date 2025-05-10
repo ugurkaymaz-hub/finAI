@@ -7,9 +7,9 @@ services:
         ports:
             - "8001:8000"
         depends_on:
-            - db
+            - user_db
         environment:
-            DATABASE_URL: postgresql://postgres:postgres@db:5432/user_db
+            DATABASE_URL: postgresql://postgres:user_db_password@user_db:5433/user_db
 
     product_service:
         build: ./product_service
@@ -17,9 +17,9 @@ services:
         ports:
             - "8002:8000"
         depends_on:
-            - db
+            - product_db
         environment:
-            DATABASE_URL: postgresql://postgres:postgres@db:5432/product_db
+            DATABASE_URL: postgresql://postgres:product_db_password@product_db:5434/product_db
 
     frontend:
         build: ./frontend
@@ -30,17 +30,30 @@ services:
             - user_service
             - product_service
 
-    db:
+    user_db:
         image: postgres:15
-        container_name: postgres_db
+        container_name: user_db
         environment:
             POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
+            POSTGRES_PASSWORD: user_db_password
             POSTGRES_DB: user_db
         ports:
-            - "5432:5432"
+            - "5433:5432"
         volumes:
-            - postgres_data:/var/lib/postgresql/data
+            - user_data:/var/lib/postgresql/data
+
+    product_db:
+        image: postgres:15
+        container_name: product_db
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: product_db_password
+            POSTGRES_DB: product_db
+        ports:
+            - "5434:5432"
+        volumes:
+            - product_data:/var/lib/postgresql/data
 
 volumes:
-    postgres_data:
+    user_data:
+    product_data:

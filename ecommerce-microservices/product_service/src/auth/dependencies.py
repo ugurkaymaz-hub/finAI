@@ -9,3 +9,4 @@ def require_user(token: str = Depends(auth_scheme)):
     if not decoded:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
     return decoded
+

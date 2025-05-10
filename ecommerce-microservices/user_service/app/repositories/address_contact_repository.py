@@ -1,4 +1,4 @@
-from app.models.address_contact import Address
+from app.models.address_contact import Address_Contact
 from app.models.user import User
 from app.core.database import SessionLocal
 from fastapi import HTTPException
@@ -10,12 +10,12 @@ class AddressRepository:
     def get_addresses_for_user(user: User):
         """Kullanıcının adreslerini veritabanından alır."""
         db = SessionLocal()
-        addresses = db.query(Address).filter(Address.user_id == user.id).all()
+        addresses = db.query(Address_Contact).filter(Address_Contact.user_id == user.id).all()
         db.close()
         return addresses
 
     @staticmethod
-    def add_address_for_user(user: User, address: Address):
+    def add_address_for_user(user: User, address: Address_Contact):
         """Kullanıcıya yeni bir adres ekler."""
         db = SessionLocal()
         address.user_id = user.id
@@ -26,10 +26,10 @@ class AddressRepository:
         return address
 
     @staticmethod
-    def update_address_for_user(user: User, address_id: int, address: Address):
+    def update_address_for_user(user: User, address_id: int, address: Address_Contact):
         """Kullanıcı adresini günceller."""
         db = SessionLocal()
-        existing_address = db.query(Address).filter(Address.id == address_id, Address.user_id == user.id).first()
+        existing_address = db.query(Address_Contact).filter(Address_Contact.id == address_id, Address_Contact.user_id == user.id).first()
         if not existing_address:
             db.close()
             return None
@@ -45,7 +45,7 @@ class AddressRepository:
     def delete_address_for_user(user: User, address_id: int):
         """Kullanıcının adresini siler."""
         db = SessionLocal()
-        address = db.query(Address).filter(Address.id == address_id, Address.user_id == user.id).first()
+        address = db.query(Address_Contact).filter(Address_Contact.id == address_id, Address_Contact.user_id == user.id).first()
         if not address:
             db.close()
             return None
