@@ -21,6 +21,18 @@ services:
         environment:
             DATABASE_URL: postgresql://postgres:product_db_password@product_db:5434/product_db
 
+    gateway:
+        build: ./gateway
+        container_name: gateway
+        ports:
+            - "8000:8000"
+        depends_on:
+            - user_service
+            - product_service
+        environment:
+            USER_SERVICE_URL: http://user_service:8000
+            PRODUCT_SERVICE_URL: http://product_service:8000
+
     frontend:
         build: ./frontend
         container_name: frontend
