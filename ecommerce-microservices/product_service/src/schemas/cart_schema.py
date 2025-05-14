@@ -9,6 +9,7 @@ class CartItemCreate(CartItemBase):
 
 class CartItemUpdate(BaseModel):
     quantity: int
+    product_id: int
 
 class CartItemResponse(CartItemBase):
     id: int

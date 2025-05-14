@@ -1,6 +1,10 @@
+#Library imports
 from sqlalchemy.orm import Session
-from models.order_model import Order, OrderItem, OrderCreate
-from repositories.interfaces.order_repository import OrderRepositoryInterface
+
+#Local imports
+from src.models.order_model import Order, OrderItem
+from src.schemas.order_schema import OrderCreate
+from src.repositories.interfaces.order_repository import OrderRepositoryInterface
 
 class OrderRepository(OrderRepositoryInterface):
 

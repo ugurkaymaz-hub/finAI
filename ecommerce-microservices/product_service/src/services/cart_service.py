@@ -1,6 +1,10 @@
+#Library imports
 from sqlalchemy.orm import Session
-from repositories.interfaces.cart_repository import CartRepositoryInterface
-from models.cart_model import CartItemCreate, CartItemUpdate
+
+# Local imports
+from src.repositories.interfaces.cart_repository import CartRepositoryInterface
+from src.repositories.concrete.cart_repository_impl import CartRepository
+from src.schemas.cart_schema import CartItemCreate, CartItemUpdate
 
 class CartService:
     def __init__(self, repo: CartRepositoryInterface):
@@ -23,3 +27,6 @@ class CartService:
 
     def clear_cart(self, db: Session, user_id: int):
         return self.repo.clear_cart(db, user_id)
+    
+
+cart_service = CartService(CartRepository())

@@ -5,6 +5,7 @@ from typing import Literal ,  Optional
 class UserCreate(BaseModel):
     username: str
     password: str
+    e_mail: str
     full_name: str
     is_active: bool = True
     role: Literal["user", "admin"] = "user"

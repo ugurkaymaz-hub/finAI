@@ -1,27 +1,12 @@
+#Library imports
 from pydantic import BaseModel, Field, validator
 from typing import Optional, List
 from datetime import datetime
 
-class CategoryBase(BaseModel):
-    name: str = Field(..., min_length=2, max_length=50)
-    description: Optional[str] = Field(None, max_length=200)
-    is_active: bool = True
+#Local imports
+from src.schemas.category_schema import CategoryResponse
 
-class CategoryCreate(CategoryBase):
-    pass
 
-class CategoryUpdate(BaseModel):
-    name: Optional[str] = Field(None, min_length=2, max_length=50)
-    description: Optional[str] = Field(None, max_length=200)
-    is_active: Optional[bool]
-
-class CategoryResponse(CategoryBase):
-    id: int
-    created_at: datetime
-    updated_at: datetime
-
-    class Config:
-        orm_mode = True
 
 class ProductBase(BaseModel):
     name: str = Field(..., min_length=2, max_length=100)
@@ -88,3 +73,4 @@ class ProductListResponse(BaseModel):
 
     class Config:
         orm_mode = True
+

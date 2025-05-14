@@ -1,6 +1,11 @@
+#Library imports
 from abc import ABC, abstractmethod
 from sqlalchemy.orm import Session
-from models.product_model import ProductCreate, ProductUpdate, Product
+from typing import Optional
+
+#Local imports
+from src.schemas.product_schema import ProductCreate, ProductUpdate
+from src.models.product_model import Product
 
 class ProductRepositoryInterface(ABC):
     
@@ -9,7 +14,7 @@ class ProductRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_by_id(self, db: Session, product_id: int) -> Product | None:
+    def get_by_id(self, db: Session, product_id: int) -> Optional[Product]:
         pass
 
     @abstractmethod

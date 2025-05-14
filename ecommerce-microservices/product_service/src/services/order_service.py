@@ -1,8 +1,14 @@
+#Library imports
 from sqlalchemy.orm import Session
-from repositories.interfaces.order_repository import OrderRepositoryInterface
-from services.cart_service import CartService
-from models.order_model import OrderCreate, OrderItemCreate
-from models.cart_model import CartItem
+
+# Local imports
+from src.repositories.interfaces.order_repository import OrderRepositoryInterface
+from src.repositories.concrete.order_repository_impl import OrderRepository
+from src.services.cart_service import CartService
+from src.schemas.order_schema import OrderCreate, OrderItemCreate
+from src.models.cart_model import CartItem
+from src.repositories.concrete.cart_repository_impl import CartRepository
+
 
 class OrderService:
     def __init__(self, repo: OrderRepositoryInterface, cart_service: CartService):
@@ -34,3 +40,8 @@ class OrderService:
 
     def get_order_history(self, db: Session, user_id: int):
         return self.repo.get_user_orders(db, user_id)
+    
+order_service = OrderService(
+    repo = OrderRepository(), 
+    cart_service=CartService(repo=CartRepository())
+)

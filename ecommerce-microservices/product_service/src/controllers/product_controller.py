@@ -1,34 +1,69 @@
+#Library imports
 from fastapi import APIRouter, Depends, HTTPException
-from auth.dependencies import get_current_user, require_admin
+from sqlalchemy.orm import Session
+from typing import List
 
-router = APIRouter(prefix="/product", tags=["Product"])
+#Local imports
+from src.auth.dependencies import get_current_user, require_admin
+from src.schemas.product_schema import ProductCreate, ProductUpdate, ProductResponse
+from src.services.product_service import product_service
+from src.core.database import get_db
 
-@router.get("/")
-def list_products(user=Depends(get_current_user)):
-    # Tüm ürünleri listele
-    return {"message": "Tüm ürünler listelendi."}
+router = APIRouter(prefix="/products", tags=["Product"])
 
-@router.get("/{product_id}")
-def get_product_detail(product_id: int, user=Depends(get_current_user)):
-    # Ürün detay
-    return {"message": f"Ürün detay: {product_id}"}
+#  Tüm ürünleri listele (herkese açık)
+@router.get("/", response_model=List[ProductResponse])
+def list_all_products(
+    db: Session = Depends(get_db),
+    user: dict = Depends(get_current_user)
+):
+    return product_service.get_all_products(db)
 
-@router.post("/")
-def create_product(data: dict, user=Depends(require_admin)):
-    # Yeni ürün ekle
-    return {"message": "Yeni ürün eklendi."}
+#  Ürün detay (herkese açık)
+@router.get("/{product_id}", response_model=ProductResponse)
+def get_product_by_id(
+    product_id: int,
+    db: Session = Depends(get_db),
+    user: dict = Depends(get_current_user)
+):
+    product = product_service.get_product_by_id(db, product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
 
-@router.post("/bulk")
-def create_bulk_products(data: list[dict], user=Depends(require_admin)):
-    # Toplu ürün ekle
-    return {"message": "Toplu ürünler eklendi."}
+#  Yeni ürün oluştur (sadece admin)
+@router.post("/", response_model=ProductResponse)
+def create_product(
+    data: ProductCreate,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_admin)
+):
+    return product_service.create_product(db, data)
 
-@router.put("/{product_id}")
-def update_product(product_id: int, data: dict, user=Depends(require_admin)):
-    # Ürün güncelle
-    return {"message": f"Ürün güncellendi: {product_id}"}
+#  Toplu ürün ekle (admin)
+@router.post("/bulk", response_model=List[ProductResponse])
+def create_bulk_products(
+    data: List[ProductCreate],
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_admin)
+):
+    return product_service.create_bulk_products(db, data)
 
+# Ürün güncelle (admin)
+@router.put("/{product_id}", response_model=ProductResponse)
+def update_product(
+    product_id: int,
+    data: ProductUpdate,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_admin)
+):
+    return product_service.update_product(db, product_id, data)
+
+# Ürün sil (admin)
 @router.delete("/{product_id}")
-def delete_product(product_id: int, user=Depends(require_admin)):
-    # Ürün sil
-    return {"message": f"Ürün silindi: {product_id}"}
+def delete_product(
+    product_id: int,
+    db: Session = Depends(get_db),
+    user: dict = Depends(require_admin)
+):
+    return product_service.delete_product(db, product_id)

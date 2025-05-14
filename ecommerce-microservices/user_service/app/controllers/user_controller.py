@@ -22,7 +22,7 @@ async def get_users(user: User = Depends(is_admin)):
 async def get_user_details(username: str, user: User = Depends(is_admin)):
     return user_service.get_user_details(username)
 
-# Yeni kullanıcı oluştur (Admin)
+# Yeni kullanıcı oluştur.
 @router.post("/user")
 async def create_user(user_data: UserCreate):
     return user_service.create_user(user_data)

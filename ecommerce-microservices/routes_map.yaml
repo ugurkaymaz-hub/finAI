@@ -1,0 +1,120 @@
+#User service
+user_service:
+    base_url: http://user_service:8000 #docker-compose.yaml dosyasındaki user_service portu.
+
+    users:
+        get_users:
+            path: /users/user
+            method: GET
+        get_user_details:
+            path: /users/user/{username}
+            method: GET
+        create_user:
+            path: /users/user
+            method: POST
+        update_user:
+            path: /users/user/{username}
+            method: PUT
+        delete_user:
+            path: /users/user/{username}
+            method: DELETE
+        get_my_info:
+            path: /users/user/me
+            method: GET
+        deactivate_user:
+            path: /users/user/{username}/deactivate
+            method: PUT
+        deactivate_own:
+            path: /users/user/me/deactivate
+            method: PUT
+        change_password:
+            path: /users/user/{username}/change-password
+            method: PUT
+        reset_password:
+            path: /users/user/{username}/reset-password
+            method: PUT
+
+    auth:
+        login:
+            path: /login
+            method: POST
+        logout:
+            path: /logout
+            method: POST
+        check_login:
+            path: /checkLogin
+            method: GET
+
+    address:
+        list_addresses:
+            path: /address/
+            method:
+        add_address:
+            path: /address/
+            method: POST
+        update_address:
+            path: /address/{address_id}
+            method: PUT
+
+    authz:
+        get_user_permissions:
+            path: /permissions
+            method: GET
+        has_role:
+            path: /hasRole/{role}
+            method: GET
+        has_permission:
+            path: /hasPermission/{permission}
+            method: GET
+
+#Product service
+product_service:
+    base_url: http://product_service:8000
+
+    product:
+        list:
+            path: /product/
+            method: GET
+        get_by_id:
+            path: /product/{product_id}
+            method: GET
+        create:
+            path: /product/
+            method: POST
+        create_bulk:
+            path: /product/bulk
+            method: POST
+        update:
+            path: /product/{product_id}
+            method: PUT
+        delete:
+            path: /product/{product_id}
+            method: DELETE
+
+    order:
+        create:
+            path: /order/
+            method: POST
+        list_user_orders:
+            path: /order/
+            method: GET
+
+    cart:
+        list:
+            path: /cart/
+            method: GET
+        get_item:
+            path: /cart/{product_id}
+            method: GET
+        add:
+            path: /cart/
+            method: POST
+        update_item:
+            path: /cart/
+            method: PUT
+        remove_item:
+            path: /cart/{product_id}
+            method: DELETE
+        clear:
+            path: /cart/
+            method: DELETE

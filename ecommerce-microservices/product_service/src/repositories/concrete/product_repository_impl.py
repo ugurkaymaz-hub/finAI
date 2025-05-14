@@ -1,6 +1,10 @@
+#Library imports
 from sqlalchemy.orm import Session
-from models.product_model import Product, ProductCreate, ProductUpdate
-from repositories.interfaces.product_repository import ProductRepositoryInterface
+
+#Local imports
+from src.models.product_model import Product
+from src.schemas.product_schema import ProductCreate, ProductUpdate
+from src.repositories.interfaces.product_repository import ProductRepositoryInterface
 
 class ProductRepository(ProductRepositoryInterface):
 

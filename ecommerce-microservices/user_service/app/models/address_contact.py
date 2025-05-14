@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from app.core.database import Base
 from sqlalchemy.orm import relationship
+from app.models.user import User
 
 
 class Address_Contact(Base):
@@ -10,8 +11,9 @@ class Address_Contact(Base):
     street = Column(String)
     city = Column(String)
     zip_code = Column(String)
-    user_id = Column(Integer, ForeignKey("users.id"))
-    phone_number = Column(String)
-    email = Column(String)
+    user_id = Column(String, ForeignKey("users.id"))
+    
 
     user = relationship("User", back_populates="addresses")
+
+#Bir userin birden çok addressi olabilir. One to Many 

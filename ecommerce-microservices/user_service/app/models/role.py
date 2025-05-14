@@ -2,7 +2,8 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from app.core.database import Base
-from app.models.permission import Permission
+from app.models.associations import role_permissions
+from app.models.user import User
 
 class Role(Base):
     __tablename__ = "roles"
@@ -12,4 +13,7 @@ class Role(Base):
 
     # Kullanıcılarla ilişki tanımlaması
     users = relationship("User", back_populates="role")
-    permissions = relationship("Permission", secondary="role_permissions")
+    permissions = relationship("Permission", secondary="role_permissions" , back_populates="roles")
+
+
+#bir kişi ya user ayda admin olabilir.

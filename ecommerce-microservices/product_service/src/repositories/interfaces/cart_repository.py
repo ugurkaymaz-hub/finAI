@@ -1,6 +1,11 @@
+#Library imports
 from abc import ABC, abstractmethod
 from sqlalchemy.orm import Session
-from models.cart_model import CartItemCreate, CartItemUpdate, CartItem
+from typing import Optional
+
+#Local imports
+from src.models.cart_model import CartItem
+from src.schemas.cart_schema import CartItemCreate, CartItemUpdate
 
 class CartRepositoryInterface(ABC):
 
@@ -9,7 +14,7 @@ class CartRepositoryInterface(ABC):
         pass
 
     @abstractmethod
-    def get_cart_item(self, db: Session, user_id: int, product_id: int) -> CartItem | None:
+    def get_cart_item(self, db: Session, user_id: int, product_id: int) -> Optional[CartItem]:
         pass
 
     @abstractmethod

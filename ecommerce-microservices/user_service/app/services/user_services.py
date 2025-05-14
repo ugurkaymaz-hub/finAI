@@ -27,7 +27,8 @@ class UserService:
             full_name=user_data.full_name ,
             is_active=user_data.is_active
         )
-        return UserRepository.save_user(user)
+        repo = UserRepository()
+        return repo.save_user(user)
     
     @staticmethod
     def delete_user(username: str):

@@ -1,6 +1,10 @@
+#Library imports
 from abc import ABC, abstractmethod
 from sqlalchemy.orm import Session
-from models.order_model import Order, OrderCreate 
+
+#Local imports
+from src.models.order_model import Order
+from src.schemas.order_schema import OrderCreate 
 
 class OrderRepositoryInterface(ABC):
 

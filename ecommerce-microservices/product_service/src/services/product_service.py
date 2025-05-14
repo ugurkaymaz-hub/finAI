@@ -1,6 +1,10 @@
+#Library imports
 from sqlalchemy.orm import Session
-from repositories.interfaces.product_repository import ProductRepositoryInterface
-from models.product_model import ProductCreate, ProductUpdate
+
+# Local imports
+from src.repositories.interfaces.product_repository import ProductRepositoryInterface
+from src.repositories.concrete.product_repository_impl import ProductRepository
+from src.schemas.product_schema import ProductCreate, ProductUpdate
 
 class ProductService:
     def __init__(self, repo: ProductRepositoryInterface):
@@ -14,6 +18,9 @@ class ProductService:
 
     def create_product(self, db: Session, product_data: ProductCreate):
         return self.repo.create(db, product_data)
+    
+    def create_bulk_products(self, db: Session, product_data: list[ProductCreate]):
+        return [self.repo.create(db, product) for product in product_data]
 
     def update_product(self, db: Session, product_id: int, product_data: ProductUpdate):
         return self.repo.update(db, product_id, product_data)
@@ -21,3 +28,5 @@ class ProductService:
     def delete_product(self, db: Session, product_id: int):
         return self.repo.delete(db, product_id)
 
+
+product_service  = ProductService(repo=ProductRepository()) 

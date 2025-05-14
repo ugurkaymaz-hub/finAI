@@ -2,7 +2,8 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from app.core.database import Base
-from app.models.address_contact import Address_Contact
+from app.models.associations import user_permissions
+
 
 class User(Base):
     __tablename__ = "users"
@@ -13,15 +14,17 @@ class User(Base):
     full_name = Column(String)
     is_active = Column(Boolean, default=True)  # 1: active, 0: inactive
     email = Column(String, unique=True, index=True)
-    phone = Column(String(20))
+    phone = Column(String(20) , unique=True)
 
     
     # Adresler ile ilişki tanımlaması
-    addresses = relationship("Address_Contact", back_populates="user")
+    addresses = relationship("Address_Contact" , back_populates="user")
 
     # Role ile ilişki tanımlaması
     role_id = Column(Integer, ForeignKey("roles.id"))  # Role'ye bağlayan foreign key
-    role = relationship("Role", back_populates="users")
+    role  = relationship("Role", back_populates="users")
+
+    permissions = relationship("Permission" , secondary=user_permissions , back_populates="users")
 
 
     
