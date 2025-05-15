@@ -2,9 +2,9 @@
 from sqlalchemy.orm import Session
 
 #Local imports
-from src.models.order_model import Order, OrderItem
-from src.schemas.order_schema import OrderCreate
-from src.repositories.interfaces.order_repository import OrderRepositoryInterface
+from models.order_model import Order, OrderItem
+from schemas.order_schema import OrderCreate
+from repositories.interfaces.order_repository import OrderRepositoryInterface
 
 class OrderRepository(OrderRepositoryInterface):
 

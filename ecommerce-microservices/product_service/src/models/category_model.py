@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from typing import Optional, List
 
 #Local imports
-from src.core.database import Base
+from core.database import Base
 
 class Category(Base):
     __tablename__ = "categories"

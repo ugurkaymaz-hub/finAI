@@ -2,9 +2,9 @@
 from sqlalchemy.orm import Session
 
 # Local imports
-from src.repositories.interfaces.product_repository import ProductRepositoryInterface
-from src.repositories.concrete.product_repository_impl import ProductRepository
-from src.schemas.product_schema import ProductCreate, ProductUpdate
+from repositories.interfaces.product_repository import ProductRepositoryInterface
+from repositories.concrete.product_repository_impl import ProductRepository
+from schemas.product_schema import ProductCreate, ProductUpdate
 
 class ProductService:
     def __init__(self, repo: ProductRepositoryInterface):
@@ -28,5 +28,3 @@ class ProductService:
     def delete_product(self, db: Session, product_id: int):
         return self.repo.delete(db, product_id)
 
-
-product_service  = ProductService(repo=ProductRepository()) 

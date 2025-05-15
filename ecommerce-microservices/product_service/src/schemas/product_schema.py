@@ -4,8 +4,7 @@ from typing import Optional, List
 from datetime import datetime
 
 #Local imports
-from src.schemas.category_schema import CategoryResponse
-
+from schemas.category_schema import CategoryResponse
 
 
 class ProductBase(BaseModel):
@@ -55,17 +54,25 @@ class ProductUpdate(BaseModel):
             raise ValueError('Stock cannot be negative')
         return v
 
-class ProductResponse(ProductBase):
+class PublicProductResponse(BaseModel):
     id: int
-    created_at: datetime
-    updated_at: datetime
+    name: str
+    description: str
+    price: float
     category: CategoryResponse
 
     class Config:
         orm_mode = True
 
+class AdminProductResponse(PublicProductResponse):
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        orm_mode = True
+
 class ProductListResponse(BaseModel):
-    items: List[ProductResponse]
+    items: List[PublicProductResponse]
     total: int
     page: int
     size: int

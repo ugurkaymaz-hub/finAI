@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     
     # Database
-    DATABASE_URL: str = "postgresql://postgres:user_db_password@localhost:5433/user_service_db"
+    DATABASE_URL: str = "postgresql://postgres:user_db_password@user_db:5432/user_db"
     
     # JWT
     JWT_SECRET_KEY: str = "-eYvjphieU0hVKwy34wsDsqwq05EEoH3IpdbQYf3PaI"

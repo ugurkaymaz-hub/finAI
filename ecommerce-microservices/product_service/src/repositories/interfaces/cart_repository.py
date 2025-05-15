@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from typing import Optional
 
 #Local imports
-from src.models.cart_model import CartItem
-from src.schemas.cart_schema import CartItemCreate, CartItemUpdate
+from models.cart_model import CartItem
+from schemas.cart_schema import CartItemCreate, CartItemUpdate
 
 class CartRepositoryInterface(ABC):
 

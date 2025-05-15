@@ -5,11 +5,13 @@ services:
         build: ./user_service
         container_name: user_service
         ports:
-            - "8001:8000"
+            - "8080:8000"
         depends_on:
             - user_db
         environment:
-            DATABASE_URL: postgresql://postgres:user_db_password@user_db:5433/user_db
+            DATABASE_URL: postgresql://postgres:user_db_password@user_db:5432/user_db
+        env_file:
+            - ./user_service/.env
 
     product_service:
         build: ./product_service
@@ -19,7 +21,9 @@ services:
         depends_on:
             - product_db
         environment:
-            DATABASE_URL: postgresql://postgres:product_db_password@product_db:5434/product_db
+            DATABASE_URL: postgresql://postgres:product_db_password@product_db:5443/product_db
+        env_file:
+            - ./product_service/.env
 
     gateway:
         build: ./gateway
@@ -33,14 +37,14 @@ services:
             USER_SERVICE_URL: http://user_service:8000
             PRODUCT_SERVICE_URL: http://product_service:8000
 
-    frontend:
-        build: ./frontend
-        container_name: frontend
-        ports:
-            - "3000:5173"
-        depends_on:
-            - user_service
-            - product_service
+    #    frontend:
+    #        build: ./frontend
+    #        container_name: frontend
+    #        ports:
+    #            - "3000:5173"
+    #        depends_on:
+    #            - user_service
+    #            - product_service
 
     user_db:
         image: postgres:15
@@ -50,7 +54,7 @@ services:
             POSTGRES_PASSWORD: user_db_password
             POSTGRES_DB: user_db
         ports:
-            - "5433:5432"
+            - "5432:5432"
         volumes:
             - user_data:/var/lib/postgresql/data
 

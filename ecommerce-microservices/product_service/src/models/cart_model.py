@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import List, Optional
 
 #Local imports
-from src.core.database import Base
+from core.database import Base
 
 
 class Cart(Base):

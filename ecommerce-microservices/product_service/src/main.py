@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.controllers import product_controller, cart_controller, order_controller
+from controllers import product_controller, cart_controller, order_controller
 
 app = FastAPI()
 

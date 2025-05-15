@@ -12,6 +12,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 user_service = UserService()
 
 
+
 # Kullanıcıları getir (Admin)
 @router.get("/user")
 async def get_users(user: User = Depends(is_admin)):

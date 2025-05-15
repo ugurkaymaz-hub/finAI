@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 from sqlalchemy.orm import Session
 
 #Local imports
-from src.models.order_model import Order
-from src.schemas.order_schema import OrderCreate 
+from models.order_model import Order
+from schemas.order_schema import OrderCreate 
 
 class OrderRepositoryInterface(ABC):
 

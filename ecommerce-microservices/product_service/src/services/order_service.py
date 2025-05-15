@@ -2,12 +2,12 @@
 from sqlalchemy.orm import Session
 
 # Local imports
-from src.repositories.interfaces.order_repository import OrderRepositoryInterface
-from src.repositories.concrete.order_repository_impl import OrderRepository
-from src.services.cart_service import CartService
-from src.schemas.order_schema import OrderCreate, OrderItemCreate
-from src.models.cart_model import CartItem
-from src.repositories.concrete.cart_repository_impl import CartRepository
+from repositories.interfaces.order_repository import OrderRepositoryInterface
+from repositories.concrete.order_repository_impl import OrderRepository
+from services.cart_service import CartService
+from schemas.order_schema import OrderCreate, OrderItemCreate
+from models.cart_model import CartItem
+from repositories.concrete.cart_repository_impl import CartRepository
 
 
 class OrderService:
