@@ -5,7 +5,7 @@ services:
         build: ./user_service
         container_name: user_service
         ports:
-            - "8080:8000"
+            - "8001:8000"
         depends_on:
             - user_db
         environment:
