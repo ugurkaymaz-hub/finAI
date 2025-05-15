@@ -2,7 +2,7 @@
 from jose import jwt, JWTError
 
 #Local imports
-from core.config import settings
+from src.core.config import settings
 
 def decode_jwt(token: str):
     try:

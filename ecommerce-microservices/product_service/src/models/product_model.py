@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from typing import Optional
 
 #Local imports
-from core.database import Base
+from src.core.database import Base
 
 class Product(Base):
     __tablename__ = "products"

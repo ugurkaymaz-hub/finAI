@@ -4,7 +4,7 @@ from typing import Optional, Dict
 
 #Local imports
 
-from core.config import settings
+from src.core.config import settings
 
 
 def decode_jwt_token(token: str) -> Dict:

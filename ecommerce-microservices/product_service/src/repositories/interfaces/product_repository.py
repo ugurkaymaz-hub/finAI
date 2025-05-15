@@ -4,8 +4,8 @@ from sqlalchemy.orm import Session
 from typing import Optional
 
 #Local imports
-from schemas.product_schema import ProductCreate, ProductUpdate
-from models.product_model import Product
+from src.schemas.product_schema import ProductCreate, ProductUpdate
+from src.models.product_model import Product
 
 class ProductRepositoryInterface(ABC):
     

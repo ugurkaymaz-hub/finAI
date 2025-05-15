@@ -4,7 +4,7 @@ from typing import Optional, List
 from datetime import datetime
 
 #Local imports
-from schemas.category_schema import CategoryResponse
+from src.schemas.category_schema import CategoryResponse
 
 
 class ProductBase(BaseModel):
@@ -62,14 +62,14 @@ class PublicProductResponse(BaseModel):
     category: CategoryResponse
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class AdminProductResponse(PublicProductResponse):
     created_at: datetime
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class ProductListResponse(BaseModel):
     items: List[PublicProductResponse]
@@ -79,5 +79,5 @@ class ProductListResponse(BaseModel):
     pages: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 

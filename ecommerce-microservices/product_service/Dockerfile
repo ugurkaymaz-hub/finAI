@@ -1,4 +1,4 @@
-# Temel image (Python 3.11 kullanılıyor, senin versiyonuna göre değiştirebilirsin)
+# Temel image 
 FROM python:3.11-slim
 
 # Ortam değişkenleri
@@ -6,15 +6,15 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Çalışma dizini oluştur
-WORKDIR /app
+WORKDIR /src
 
 # Gereksinimleri yükle
 COPY requirements.txt .
-RUN pip install --upgrade pip
+
 RUN pip install -r requirements.txt
 
 # Gerekli dosyaları kopyala
-COPY ./src /app
+COPY . /src 
 
 # Uygulama çalıştırma
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

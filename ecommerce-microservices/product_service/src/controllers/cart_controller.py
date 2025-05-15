@@ -4,11 +4,11 @@ from sqlalchemy.orm import Session
 from typing import List
 
 #Local imports
-from schemas.cart_schema import CartItemCreate, CartItemUpdate , CartItemBase
-from services.cart_service import CartService
-from repositories.concrete.cart_repository_impl import CartRepository
-from core.database import get_db
-from auth.dependencies import require_user
+from src.schemas.cart_schema import CartItemCreate, CartItemUpdate , CartItemBase
+from src.services.cart_service import CartService
+from src.repositories.concrete.cart_repository_impl import CartRepository
+from src.core.database import get_db
+from src.auth.dependencies import require_user
 
 router = APIRouter(prefix="/cart", tags=["Cart"])
 

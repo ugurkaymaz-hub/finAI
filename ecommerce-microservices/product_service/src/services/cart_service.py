@@ -2,9 +2,9 @@
 from sqlalchemy.orm import Session
 
 # Local imports
-from repositories.interfaces.cart_repository import CartRepositoryInterface
-from repositories.concrete.cart_repository_impl import CartRepository
-from schemas.cart_schema import CartItemCreate, CartItemUpdate
+from src.repositories.interfaces.cart_repository import CartRepositoryInterface
+from src.repositories.concrete.cart_repository_impl import CartRepository
+from src.schemas.cart_schema import CartItemCreate, CartItemUpdate
 
 class CartService:
     def __init__(self, repo: CartRepositoryInterface):

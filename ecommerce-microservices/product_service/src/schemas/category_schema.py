@@ -21,7 +21,7 @@ class CategoryResponse(CategoryBase):
     updated_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class CategoryListResponse(BaseModel):
     items: List[CategoryResponse]
@@ -31,4 +31,4 @@ class CategoryListResponse(BaseModel):
     pages: int
 
     class Config:
-        orm_mode = True 
+        from_attributes = True 

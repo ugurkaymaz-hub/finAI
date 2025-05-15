@@ -4,11 +4,11 @@ from sqlalchemy.orm import Session
 from typing import List
 
 #Local imports
-from auth.dependencies import get_current_user, require_admin
-from schemas.product_schema import ProductCreate, ProductUpdate, PublicProductResponse , AdminProductResponse
-from services.product_service import ProductService
-from core.database import get_db
-from repositories.concrete.product_repository_impl import ProductRepository
+from src.auth.dependencies import get_current_user, require_admin
+from src.schemas.product_schema import ProductCreate, ProductUpdate, PublicProductResponse , AdminProductResponse
+from src.services.product_service import ProductService
+from src.core.database import get_db
+from src.repositories.concrete.product_repository_impl import ProductRepository
 
 router = APIRouter(prefix="/products", tags=["Product"])
 product_service = ProductService(repo=ProductRepository())

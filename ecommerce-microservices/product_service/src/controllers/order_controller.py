@@ -4,10 +4,10 @@ from sqlalchemy.orm import Session
 from typing import List
 
 #Local imports
-from core.database import get_db
-from services.order_service import order_service
-from auth.dependencies import require_user
-from schemas.order_schema import OrderResponse
+from src.core.database import get_db
+from src.services.order_service import order_service
+from src.auth.dependencies import require_user
+from src.schemas.order_schema import OrderResponse
 
 
 router = APIRouter(prefix="/order", tags=["Order"])

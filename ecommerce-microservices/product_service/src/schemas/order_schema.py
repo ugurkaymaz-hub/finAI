@@ -17,7 +17,7 @@ class OrderItemRead(BaseModel):
     price: float
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class OrderRead(BaseModel):
     id: int
@@ -26,7 +26,7 @@ class OrderRead(BaseModel):
     items: List[OrderItemRead]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class OrderItemResponse(BaseModel):
     product_id: int
@@ -34,7 +34,7 @@ class OrderItemResponse(BaseModel):
     price_at_purchase: float  # sipariş sırasında ürünün fiyatı
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class OrderResponse(BaseModel):
     id: int
@@ -44,5 +44,5 @@ class OrderResponse(BaseModel):
     items: List[OrderItemResponse]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
         

@@ -2,9 +2,9 @@
 from sqlalchemy.orm import Session
 
 # Local imports
-from repositories.interfaces.product_repository import ProductRepositoryInterface
-from repositories.concrete.product_repository_impl import ProductRepository
-from schemas.product_schema import ProductCreate, ProductUpdate
+from src.repositories.interfaces.product_repository import ProductRepositoryInterface
+from src.repositories.concrete.product_repository_impl import ProductRepository
+from src.schemas.product_schema import ProductCreate, ProductUpdate
 
 class ProductService:
     def __init__(self, repo: ProductRepositoryInterface):

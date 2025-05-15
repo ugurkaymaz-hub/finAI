@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 
 # Local imports
-from core.database import Base
+from src.core.database import Base
 
 class Order(Base):
     __tablename__ = "orders"
