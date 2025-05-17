@@ -16,4 +16,3 @@ class Address_Contact(Base):
 
     user = relationship("User", back_populates="addresses")
 
-#Bir userin birden çok addressi olabilir. One to Many 

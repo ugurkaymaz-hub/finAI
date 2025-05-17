@@ -4,8 +4,9 @@ from typing import Optional, Dict
 
 #Local imports
 
-from src.core.config import settings
+from src.core.config import Settings
 
+settings = Settings()
 
 def decode_jwt_token(token: str) -> Dict:
     try:

@@ -15,7 +15,7 @@ def login(request: LoginRequest):
     return AuthService.login(request)
 
 # Oturum Kapat
-@router.post("/logout")
+@router.post("/logout" , response_model=dict)
 def logout(token: str = Depends(oauth2_scheme)):
     """Giriş yapan kullanıcının oturumunu kapatır."""
     success = AuthService.logout(token)

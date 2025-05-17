@@ -5,6 +5,7 @@ from app.repositories.user_repository import UserRepository
 from app.core.security import hash_password 
 from fastapi import HTTPException
 from app.models.user import User
+from app.schemas.user_schema import UserResponse
 
 class UserService:
 
@@ -25,7 +26,9 @@ class UserService:
             username=user_data.username, 
             password=hashed_password , 
             full_name=user_data.full_name ,
-            is_active=user_data.is_active
+            is_active=user_data.is_active , 
+            e_mail=user_data.e_mail,
+            phone=user_data.phone
         )
         repo = UserRepository()
         return repo.save_user(user)
@@ -49,8 +52,9 @@ class UserService:
         return UserRepository.reset_password(username)
 
     @staticmethod
-    def get_my_info(user: User):
-        return user  # Kullanıcı bilgilerini döndürüyoruz
+    def get_my_info(user: User) :
+        username = user.username
+        return UserRepository.get_user_details(username)  # Kullanıcı bilgilerini döndürüyoruz
 
     @staticmethod
     def deactivate_user(username: str):

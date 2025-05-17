@@ -13,7 +13,7 @@ class User(Base):
     password = Column(String)
     full_name = Column(String)
     is_active = Column(Boolean, default=True)  # 1: active, 0: inactive
-    email = Column(String, unique=True, index=True)
+    e_mail = Column(String, unique=True, index=True)
     phone = Column(String(20) , unique=True)
 
     
@@ -25,6 +25,8 @@ class User(Base):
     role  = relationship("Role", back_populates="users")
 
     permissions = relationship("Permission" , secondary=user_permissions , back_populates="users")
+
+    
 
 
     

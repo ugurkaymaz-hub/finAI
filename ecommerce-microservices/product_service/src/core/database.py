@@ -4,9 +4,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # Local imports
-from src.core.config import settings
+from src.core.config import Settings
 
 
+settings = Settings()
 
 
 engine = create_engine(settings.DATABASE_URL)

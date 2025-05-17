@@ -5,10 +5,18 @@ from typing import List
 
 #Local imports
 from src.core.database import get_db
-from src.services.order_service import order_service
+from src.services.order_service import OrderService
 from src.auth.dependencies import require_user
 from src.schemas.order_schema import OrderResponse
+from src.services.cart_service import CartService
+from src.repositories.concrete.order_repository_impl import OrderRepository
+from src.repositories.concrete.cart_repository_impl import CartRepository
 
+
+order_service = OrderService(
+    repo = OrderRepository(), 
+    cart_service=CartService(repo=CartRepository())
+)
 
 router = APIRouter(prefix="/order", tags=["Order"])
 

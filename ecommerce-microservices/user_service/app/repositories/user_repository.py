@@ -1,5 +1,5 @@
  # Kullanıcı verisiyle ilgili işlemleri burada yaparız (veritabanı)
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session , joinedload
 from sqlalchemy.exc import NoResultFound
 from app.models.user import User
 from app.core.database import SessionLocal
@@ -7,17 +7,17 @@ from app.core.security import hash_password, verify_password
 from fastapi import HTTPException, status
 
 class UserRepository:
-    def __init__(self):
-        self.db: Session = SessionLocal()
+    def __init__(self, db: Session):
+        self.db = db
 
     def get_all_users(self):
         return self.db.query(User).all()
 
-    def get_user_details(self, username: str):
-        user = self.db.query(User).filter(User.username == username).first()
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
-        return user
+    def get_user_details(self, username: str, load_role: bool = False) -> User | None:
+        query = self.db.query(User).filter(User.username == username)
+        if load_role:
+            query = query.options(joinedload(User.role))
+        return query.first()
 
     def save_user(self, user: User):
         self.db.add(user)
@@ -65,6 +65,3 @@ class UserRepository:
         db_user.is_active = False
         self.db.commit()
         return {"detail": "Your account has been deactivated"}
-
-    def __del__(self):
-        self.db.close()
