@@ -6,6 +6,8 @@ from app.core.security import hash_password
 from fastapi import HTTPException
 from app.models.user import User
 from app.schemas.user_schema import UserResponse
+from sqlalchemy.orm import Session
+
 
 class UserService:
 
@@ -18,20 +20,9 @@ class UserService:
         return UserRepository.get_user_details(username)
 
     @staticmethod
-    def create_user(user_data: UserCreate):
-        # Şifreyi hash'le
-        hashed_password = hash_password(user_data.password)
-        # Yeni kullanıcıyı oluştur ve kaydet
-        user = User(
-            username=user_data.username, 
-            password=hashed_password , 
-            full_name=user_data.full_name ,
-            is_active=user_data.is_active , 
-            e_mail=user_data.e_mail,
-            phone=user_data.phone
-        )
-        repo = UserRepository()
-        return repo.save_user(user)
+    def create_user(user_data: UserCreate , db: Session):
+        repo = UserRepository(db)
+        return repo.create_user(user_data) 
     
     @staticmethod
     def delete_user(username: str):

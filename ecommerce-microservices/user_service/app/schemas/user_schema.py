@@ -38,13 +38,13 @@ class UserResponse(BaseModel):
     id: int
     username: str
     full_name: str
+    is_active: bool
     e_mail: str
     phone: str
-    role: str
-    is_active: bool
+    role_id: int
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 class UserDeleteResponse(BaseModel):
     message: str =  "User deleted successfully"  
@@ -53,11 +53,11 @@ class UserDeleteResponse(BaseModel):
         from_attributes = True
 
 class UserCreateResponse(BaseModel):
-    message: str =  "User created successfully"  
+    message: str = "User created successfully"
     created_user: UserResponse
 
     class Config:
-        from_attributes = True
+        orm_mode = True
 
 class UserDeactivateResponse(BaseModel):
     message: str =  "User deactivated successfully"  

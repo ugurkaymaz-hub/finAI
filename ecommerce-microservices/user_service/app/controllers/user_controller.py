@@ -7,6 +7,8 @@ from app.models.user import User
 from app.core.auth import is_admin , get_current_user
 from app.schemas.user_schema import UserBase
 from app.controllers.auth_controller import oauth2_scheme
+from app.core.database import get_db
+from sqlalchemy.orm import Session
 
 
 router = APIRouter(prefix="/users", tags=["Users"])
@@ -28,8 +30,12 @@ async def get_user_details(username: str, user: User = Depends(is_admin)):
 
 # Yeni kullanıcı oluştur.
 @router.post("/user" ,  response_model=UserCreateResponse)
-async def create_user(user_data: UserCreate):
-    return user_service.create_user(user_data)
+async def create_user(user_data: UserCreate , db: Session = Depends(get_db)):
+    created_user = user_service.create_user(user_data , db) 
+    return UserCreateResponse(
+        message="User created successfully",
+        created_user=UserResponse.from_orm(created_user)
+    )
 
 
 # Kullanıcıyı güncelle (Admin)

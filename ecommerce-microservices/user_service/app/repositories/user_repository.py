@@ -2,9 +2,11 @@
 from sqlalchemy.orm import Session , joinedload
 from sqlalchemy.exc import NoResultFound
 from app.models.user import User
+from app.models.role import Role
 from app.core.database import SessionLocal
 from app.core.security import hash_password, verify_password
 from fastapi import HTTPException, status
+from app.schemas.user_schema import UserCreate
 
 class UserRepository:
     def __init__(self, db: Session):
@@ -18,7 +20,25 @@ class UserRepository:
         if load_role:
             query = query.options(joinedload(User.role))
         return query.first()
-
+    
+    def create_user(self, user_data: UserCreate):
+    # Şifreyi hash'le
+        hashed_password = hash_password(user_data.password)
+        role = self.db.query(Role).filter(Role.name == user_data.role).first()
+        if not role:
+            raise ValueError("Role bulunamadı")
+        # Yeni kullanıcıyı oluştur ve kaydet
+        user = User(
+            username=user_data.username,  
+            password=hashed_password , 
+            full_name=user_data.full_name ,
+            is_active=user_data.is_active , 
+            e_mail=user_data.e_mail,
+            phone=user_data.phone , 
+            role_id = role.id
+        )
+        return self.save_user(user)
+    
     def save_user(self, user: User):
         self.db.add(user)
         self.db.commit()
