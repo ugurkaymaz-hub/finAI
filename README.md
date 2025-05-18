@@ -1,4 +1,4 @@
- # E-Commerce Microservices Platform
+#  🛍️ E-Commerce Microservices Platform
 
 Bu proje, mikroservis mimarisiyle inşa edilmiş bir e-ticaret platformunun temel yapısını oluşturmaktadır. Her servis bağımsız olarak geliştirilmiş olup, kullanıcı yönetimi, ürün işlemleri, kimlik doğrulama, alışveriş ve admin paneli gibi işlevleri hedeflemektedir.
 
@@ -91,17 +91,17 @@ FinAI-E-Marketting/
 ## 🚀 Kurulum
 
 > Docker yüklü olmalıdır.
-> ```bash
+
+```bash
 git clone https://github.com/kullanici_adi/ecommerce-microservices.git
 cd ecommerce-microservices
 docker-compose up --build
 ```
 
----
+### 👤 Test Kullanıcısı
 
-## 👤 Test Kullanıcısı
-
-Aşağıdaki bilgilerle sisteme login endpointi üzerinden giriş yapabilirsiniz.
+username : superuser  
+password : superuser12345
 
 username : superuser
 password : superuser12345
