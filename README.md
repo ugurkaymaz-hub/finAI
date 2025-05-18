@@ -91,9 +91,20 @@ FinAI-E-Marketting/
 ## 🚀 Kurulum
 
 > Docker yüklü olmalıdır.
-
-```bash
+> ```bash
 git clone https://github.com/kullanici_adi/ecommerce-microservices.git
 cd ecommerce-microservices
 docker-compose up --build
 ```
+
+---
+
+## 👤 Test Kullanıcısı
+
+Aşağıdaki bilgilerle sisteme login endpointi üzerinden giriş yapabilirsiniz.
+
+username : superuser
+password : superuser12345
+
+---
+
