@@ -1,4 +1,4 @@
-# # E-Commerce Microservices Platform
+ # E-Commerce Microservices Platform
 
 Bu proje, mikroservis mimarisiyle inşa edilmiş bir e-ticaret platformunun temel yapısını oluşturmaktadır. Her servis bağımsız olarak geliştirilmiş olup, kullanıcı yönetimi, ürün işlemleri, kimlik doğrulama, alışveriş ve admin paneli gibi işlevleri hedeflemektedir.
 
