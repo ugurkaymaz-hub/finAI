@@ -93,7 +93,7 @@ FinAI-E-Marketting/
 > Docker yüklü olmalıdır.
 
 ```bash
-git clone https://github.com/kullanici_adi/ecommerce-microservices.git
+git clone https://github.com/ugurkaymaz-hub/ecommerce-microservices.git
 cd ecommerce-microservices
 docker-compose up --build
 ```
@@ -101,9 +101,6 @@ docker-compose up --build
 ### 👤 Test Kullanıcısı
 
 username : superuser  
-password : superuser12345
-
-username : superuser
 password : superuser12345
 
 ---
